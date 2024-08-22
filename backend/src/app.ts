@@ -8,6 +8,7 @@ config();
 const app = express()
 
 app.use("/graphql",graphqlHTTP({schema:null,graphiql:true}))
+
 connecttoDatabase().then(()=>{
     app.listen(process.env.PORT,()=>console.log(`Server open on port ${process.env.PORT} `))
 })
