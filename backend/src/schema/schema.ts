@@ -1,6 +1,6 @@
 import { GraphQLID, GraphQLNonNull, GraphQLObjectType, GraphQLString } from "graphql";
 
-const UserType = new GraphQLObjectType({
+export const UserType = new GraphQLObjectType({
     name:"UserType",
     fields:()=>({
         id:{type:GraphQLNonNull(GraphQLID)},
@@ -10,7 +10,7 @@ const UserType = new GraphQLObjectType({
     }),
 })
 
-const BlogType = new GraphQLObjectType({
+export const BlogType = new GraphQLObjectType({
     name:"BlogType",
     fields:()=>({
         id:{type:GraphQLNonNull(GraphQLID)},
@@ -20,7 +20,7 @@ const BlogType = new GraphQLObjectType({
     })
 })
 
-const commentType = new GraphQLObjectType({
+export const commentType = new GraphQLObjectType({
     name:"CommentType",
     fields:()=>({
         id:{type:GraphQLNonNull(GraphQLID)},
