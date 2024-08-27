@@ -6,6 +6,8 @@ import Blog from '../models/Blog';
 import Comment from '../models/Comment';
 import { Document } from 'mongoose';
 import { hashSync,compareSync } from 'bcryptjs';
+
+type DocumentType=Document<any,any,any>
 const RootQuery = new GraphQLObjectType({
     name: "RootQuery",
     fields: {
@@ -41,7 +43,7 @@ const  mutations = new GraphQLObjectType({
                 password:{type:GraphQLNonNull(GraphQLString)}
             },
             async resolve(parent,{name,email,password}){
-                let existingUser:Document<any,any,any>;
+                let existingUser:DocumentType;
                 try {
                     existingUser = await User.findOne({email:email})
                     if(existingUser) return new Error("user Already Exists");
@@ -60,7 +62,7 @@ const  mutations = new GraphQLObjectType({
                 password:{type:GraphQLNonNull(GraphQLString)}
             },
             async resolve(parent,{email,password}){
-                let existingUser:Document<any,any,any>;
+                let existingUser:DocumentType;
                 try {
                     existingUser = await User.findOne({email:email})
                     if(!existingUser) return new Error("user Not Exists");
@@ -73,7 +75,58 @@ const  mutations = new GraphQLObjectType({
                     return new Error(err)
                 }
             }
-        }
+        },
+        addBlog:{
+            type:BlogType,
+            args:{
+                title:{type:GraphQLNonNull(GraphQLString)},
+                content:{type:GraphQLNonNull(GraphQLString)},
+                date:{type:GraphQLNonNull(GraphQLString)},
+            },
+            async resolve(parent,{title,content,date}){
+                let blog:DocumentType
+                try{
+                    blog = new Blog({title,content,date});
+                    return await blog.save()
+                } catch(err){
+                    return new Error(err)
+                }
+            }
+        },
+        updateBlog:{
+            type:BlogType,
+            args:{
+                id:{type:GraphQLNonNull(GraphQLID)},
+                title:{type:GraphQLNonNull(GraphQLString)},
+                content:{type:GraphQLNonNull(GraphQLString)},
+            },
+            async resolve(parent,{title,content,id}){
+                let existingBlog:DocumentType
+                try{
+                    existingBlog = await Blog.findById(id);
+                    if(!existingBlog) return new Error("Blog doesn`t Exists")
+                    return await Blog.findByIdAndUpdate(id,{title,content},{new:true});
+                } catch(err){
+                    return new Error(err)
+                }
+            },
+        },
+        deleteBlog:{
+            type:BlogType,
+            args:{
+                id:{type:GraphQLNonNull(GraphQLID)},
+            },
+            async resolve(parent,{id}){
+                let existingBlog:DocumentType
+                try{
+                    existingBlog = await Blog.findById(id);
+                    if(!existingBlog) return new Error("Blog doesn`t Exists")
+                    return await Blog.findByIdAndDelete(id);
+                } catch(err){
+                    return new Error(err)
+                }
+            },
+        },
     }
 })
 
