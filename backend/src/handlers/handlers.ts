@@ -157,7 +157,9 @@ const mutations = new GraphQLObjectType({
                     await comment.save();
 
                     // Add the comment to the User and Blog
+                    // @ts-ignore
                     existingUser.comments.push(comment._id);
+                    // @ts-ignore
                     existingBlog.comments.push(comment._id);
 
                     await existingUser.save();
@@ -183,30 +185,34 @@ const mutations = new GraphQLObjectType({
                     if (!comment) {
                         throw new Error("Comment not found");
                     }
-    
+
                     // Find the user associated with the comment
+                    // @ts-ignore
                     const existingUser = await User.findById(comment.user);
                     if (!existingUser) {
                         throw new Error("User not found");
                     }
-    
+
                     // Find the blog associated with the comment
+                    // @ts-ignore
                     const existingBlog = await Blog.findById(comment.blog);
                     if (!existingBlog) {
                         throw new Error("Blog not found");
                     }
-    
+
                     // Remove the comment reference from the user and blog
+                    // @ts-ignore
                     existingUser.comments.pull(comment._id);
+                    // @ts-ignore
                     existingBlog.comments.pull(comment._id);
-    
+
                     // Save the user and blog
                     await existingUser.save();
                     await existingBlog.save();
-    
+
                     // Delete the comment
                     await comment.deleteOne();
-    
+
                     return comment;
                 } catch (err) {
                     // Log the error for debugging
