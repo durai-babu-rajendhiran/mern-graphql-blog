@@ -3,10 +3,10 @@ import {config} from "dotenv";
 import { connecttoDatabase } from "./utils/connection";
 import { graphqlHTTP } from "express-graphql";
 import schema from './handlers/handlers'
-
+import cors from "cors"
 config();
 const app = express()
-
+app.use(cors())
 app.use("/graphql",graphqlHTTP({schema:schema,graphiql:true}))
 
 connecttoDatabase().then(()=>{

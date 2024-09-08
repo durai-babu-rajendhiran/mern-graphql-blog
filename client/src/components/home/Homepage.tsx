@@ -1,6 +1,5 @@
 import { homepageStyles } from '../../styles/homepage-styles'
 import { Box, Typography } from '@mui/material'
-import Footer from './Footer'
 
 const Homepage = () => {
   return <Box sx={homepageStyles.container}>
@@ -34,7 +33,6 @@ const Homepage = () => {
         alt="article"
         src="/assets/images/blog-three.jpg" />
     </Box>
-    <Footer />
   </Box>
 }
 
