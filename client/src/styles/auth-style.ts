@@ -53,5 +53,13 @@ export const authStyle: Styles = {
             bgcolor: "orangered",
             boxShadow: "10px 10px 20px #ccc"
         }
+    },
+    switchBtn:{
+        background:"transparent",
+        color:"#273238",
+        "hover":{
+            textDecoration:"underline",
+            textUnderlineOffset:"5px"
+        }
     }
 }
