@@ -2,26 +2,38 @@ import './App.css';
 import Homepage from './components/home/Homepage';
 import Header from './components/header/Header';
 import Footer from './components/home/Footer';
-import {Route, Routes} from "react-router-dom"
+import { Route, Routes } from "react-router-dom"
 import Blogs from './components/blogs/Blogs';
 import Auth from './components/auth/Auth';
-
+import { useSelector,useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { authActions } from './store/auth-slice';
 function App() {
+  const dispatch = useDispatch()
+  const isLoggedIn = useSelector((state: any) => state.isLoggedIn)
+console.log(isLoggedIn)
+  useEffect(() => {
+    const data:string = localStorage.getItem("userData") as string;
+    if(JSON.parse(data) != null){
+      dispatch(authActions.login())
+    }
+  }, [])
+  
   return (
     <div>
       <header>
-        <Header/>
+        <Header />
       </header>
       <main>
         <Routes>
-          <Route path="/" element={<Homepage/>} />
-          <Route path="/blogs" element={<Blogs/>} />
-          <Route path="/auth" element={<Auth/>} />
+          <Route path="/" element={<Homepage />} />
+          <Route path="/blogs" element={<Blogs />} />
+          <Route path="/auth" element={<Auth />} />
         </Routes>
       </main>
-    <footer>
-    <Footer />
-    </footer>
+      <footer>
+        <Footer />
+      </footer>
     </div>
   );
 }

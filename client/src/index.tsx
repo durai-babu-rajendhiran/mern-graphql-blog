@@ -2,7 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
+import {Provider} from "react-redux"
 import { BrowserRouter } from 'react-router-dom';
+import {store} from './store'
 import {ApolloClient, ApolloProvider, InMemoryCache} from '@apollo/client'
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -14,6 +16,7 @@ const client = new ApolloClient({
 });
 
 root.render(
+  <Provider store={store}>
   <ApolloProvider client={client}>
   <BrowserRouter>
   <React.StrictMode>
@@ -21,5 +24,6 @@ root.render(
   </React.StrictMode>
   </BrowserRouter>
   </ApolloProvider>
+  </Provider>
 );
 
