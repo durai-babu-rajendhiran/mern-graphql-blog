@@ -8,6 +8,8 @@ import Auth from './components/auth/Auth';
 import { useSelector,useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { authActions } from './store/auth-slice';
+import AddBlog from './components/blogs/AddBlog';
+import Profile from './components/header/User/Profile';
 function App() {
   const dispatch = useDispatch()
   const isLoggedIn = useSelector((state: any) => state.isLoggedIn)
@@ -29,6 +31,8 @@ console.log(isLoggedIn)
           <Route path="/" element={<Homepage />} />
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/add" element={<AddBlog />} />
+          <Route path="/profile" element={<Profile/>} />
         </Routes>
       </main>
       <footer>

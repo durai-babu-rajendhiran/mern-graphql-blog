@@ -14,7 +14,7 @@ import { useMutation } from '@apollo/client';
 import { USER_LOGIN,USER_REGISTER } from '../graphql/mutations';
 import { useDispatch } from 'react-redux';
 import { authActions } from '../../store/auth-slice';
-
+import {useNavigate} from "react-router-dom"
 // Define the form data interface
 type FormData = {
   name?: string; // Optional for login
@@ -23,6 +23,7 @@ type FormData = {
 }
 
 const Auth: React.FC = () => {
+  const navigate = useNavigate()
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
   const [login] = useMutation(USER_LOGIN);
   const [signup] = useMutation(USER_REGISTER);
@@ -39,6 +40,7 @@ const Auth: React.FC = () => {
       localStorage.setItem("userData", JSON.stringify({ id, email, name }))
     }
     dispatch(authActions.login())
+    navigate("/blogs")
   }
   const onSubmit = async ({ name, email, password }: FormData) => {
     if (isSignup) {

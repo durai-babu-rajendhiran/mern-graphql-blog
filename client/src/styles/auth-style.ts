@@ -33,7 +33,7 @@ export const authStyle: Styles = {
         mb: 5,
         mt: 5
     },
-    form: {
+    form: { 
         display: "flex",
         flexDirection: "column",
         gap: 4,
