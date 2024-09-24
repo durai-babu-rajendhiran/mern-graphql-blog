@@ -83,11 +83,12 @@ const mutations = new GraphQLObjectType({
                 title: { type: GraphQLNonNull(GraphQLString) },
                 content: { type: GraphQLNonNull(GraphQLString) },
                 date: { type: GraphQLNonNull(GraphQLString) },
+                user: { type: GraphQLNonNull(GraphQLID) },
             },
-            async resolve(parent, { title, content, date }) {
+            async resolve(parent, { title, content, date, user}) {
                 let blog: DocumentType
                 try {
-                    blog = new Blog({ title, content, date });
+                    blog = new Blog({ title, content, date,user});
                     return await blog.save()
                 } catch (err) {
                     return new Error(err)
