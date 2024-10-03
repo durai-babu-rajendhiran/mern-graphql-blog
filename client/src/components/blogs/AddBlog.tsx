@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState,useRef } from 'react';
 import { Box, Button, Typography, Snackbar } from '@mui/material';
 import { addStyles, HtmlElmStyles } from "../../styles/add-blog-styles";
 import { useMutation } from '@apollo/client';
 import { ADD_BLOG } from '../graphql/mutations';
 
 const AddBlog = () => {
-  const [title, setTitle] = useState('Post Your Story Title');
-  const [content, setContent] = useState('Describe Your Story');
   const [addBlog] = useMutation(ADD_BLOG);
+  const HeadingRef = useRef<HTMLHeadingElement | null>(null);
+  const ContentRef = useRef<HTMLParagraphElement | null>(null);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
@@ -18,12 +18,13 @@ const AddBlog = () => {
       const date = new Date();
       const userData = localStorage.getItem("userData");
       const user = userData ? JSON.parse(userData).id : null;
-
+      const title = HeadingRef.current?.innerText;
+      const content = ContentRef.current?.innerText;
       if (!user) {
         throw new Error("User not logged in.");
       }
 
-      if (!title.trim() || !content.trim()) {
+      if (!title?.trim() || !content?.trim()) {
         throw new Error("Title and content cannot be empty.");
       }
 
@@ -40,7 +41,7 @@ const AddBlog = () => {
       setSnackbarMessage('Blog published successfully!');
       setOpenSnackbar(true);
       console.log(data);
-    } catch (err:any) {
+    } catch (err: any) {
       console.error(err);
       setSnackbarMessage(err.message || 'Error publishing blog. Please try again.');
       setOpenSnackbar(true);
@@ -50,6 +51,7 @@ const AddBlog = () => {
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
+
 
   return (
     <Box sx={addStyles.container}>
@@ -61,24 +63,22 @@ const AddBlog = () => {
       </Box>
       <form onSubmit={handleSubmit}>
         <Box sx={addStyles.formContainer}>
-          <h2
-            style={HtmlElmStyles.h2}
-            contentEditable
-            suppressContentEditableWarning={true}
-            onBlur={(e) => setTitle(e.currentTarget.textContent || 'Post Your Story Title')}
-            onInput={(e) => setTitle(e.currentTarget.textContent || '')}
-          >
-            {title}
-          </h2>
-          <p
-            style={HtmlElmStyles.p}
-            contentEditable
-            suppressContentEditableWarning={true}
-            onBlur={(e) => setContent(e.currentTarget.textContent || 'Describe Your Story')}
-            onInput={(e) => setContent(e.currentTarget.textContent || '')}
-          >
-            {content}
-          </p>
+          <div>
+            <h2
+              style={HtmlElmStyles.h2}
+              contentEditable
+              ref={HeadingRef}
+            >
+            Post Your story Title
+            </h2>
+            <p
+              style={HtmlElmStyles.p}
+              contentEditable
+              ref={ContentRef}
+            >
+              Describe Your Story
+            </p>
+          </div>
         </Box>
       </form>
       <Snackbar
